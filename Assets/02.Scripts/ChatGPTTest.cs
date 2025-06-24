@@ -18,7 +18,7 @@ public class ChatGPTTest : MonoBehaviour
     public Button SendButton;              // 보내기 버튼
     public AudioSource MyAudioSource;
     public RawImage RawImage;
-    private static readonly string OPENAI_API_KEY = System.Environment.GetEnvironmentVariable("OPENAI");
+    private static readonly string OPENAI_API_KEY = APIKeys.OPENAI_API_KEY;
     
       
     private List<Message> _messages = new List<Message>();
@@ -26,10 +26,16 @@ public class ChatGPTTest : MonoBehaviour
 
     private void Start()
     {
-                
-        // 1. API 클라이언트 초기화 -> ChatGPT 접속
-        _api = new OpenAIClient(OPENAI_API_KEY);      
-        
+        Debug.Log($"API KEY: {OPENAI_API_KEY}");
+
+        if (string.IsNullOrEmpty(OPENAI_API_KEY))
+        {
+            Debug.LogError("API KEY is null or empty. Check your environment or resource file.");
+            return;
+        }
+
+        _api = new OpenAIClient(OPENAI_API_KEY);
+    
 
         // CHAT-F
         // C: Context   : 문맥, 상황을 많이 알려줘라
